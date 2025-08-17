@@ -2,8 +2,11 @@ use piston_window::*;
 use piston_window::types::Color;
 use rand::{rng, Rng};
 
-use super::snake::{Direction, Snake};
-use super::draw::{draw_block, draw_rectangle};
+use snake::{Direction, Snake};
+use draw::{draw_block, draw_rectangle};
+
+pub mod draw;
+pub mod snake;  
 
 const FOOD_COLOR: Color = [0.48, 0.03, 0.15, 1.0];
 const BORDER_COLOR: Color = [0.0, 0.0, 0.1, 1.0];

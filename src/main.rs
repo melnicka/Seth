@@ -4,7 +4,7 @@ extern crate piston_window;
 use piston_window::*;
 use piston_window::types::Color;
 
-use seth::game::game::Game;
+use seth::game::Game;
 use seth::game::draw::to_coord_u32;
 
 const BACK_COLOR: Color = [0.24, 0.13, 0.21, 1.0];
