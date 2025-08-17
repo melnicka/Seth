@@ -2,6 +2,7 @@ extern crate rand;
 extern crate piston_window;
 
 mod game;
+mod neat;
 
 use piston_window::*;
 use piston_window::types::Color;
