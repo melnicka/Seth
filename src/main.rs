@@ -1,14 +1,11 @@
 extern crate rand;
 extern crate piston_window;
 
-mod game;
-mod neat;
-
 use piston_window::*;
 use piston_window::types::Color;
 
-use crate::game::game::Game;
-use crate::game::draw::to_coord_u32;
+use seth::game::game::Game;
+use seth::game::draw::to_coord_u32;
 
 const BACK_COLOR: Color = [0.24, 0.13, 0.21, 1.0];
 

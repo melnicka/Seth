@@ -1,42 +1,47 @@
 use std::collections::HashMap;
 use rand::Rng;
 
+#[derive(Debug, Clone)]
 pub enum NodeType {
     Input,
     Hidden,
     Output,
 }
 
+#[derive(Debug, Clone)]
 pub struct Node {
-    id: u32,
-    node_type: NodeType,
+    pub id: u32,
+    pub node_type: NodeType,
 }
 
-#[derive(Hash, Eq, PartialEq, Copy, Clone)]
+#[derive(Hash, Eq, PartialEq, Copy, Clone, Debug)]
 pub struct ConnectionID {
-    in_node_id: u32,
-    out_node_id: u32,
+    pub in_node_id: u32,
+    pub out_node_id: u32,
 }
 
+#[derive(Debug, Clone)]
 pub struct Connection {
-    id: ConnectionID,
-    weight: f64,
-    enabled: bool,
+    pub id: ConnectionID,
+    pub weight: f64,
+    pub enabled: bool,
 }
 
+#[derive(Debug)]
 pub struct InnovationHistory {
-    history: HashMap<ConnectionID, u32>,
-    counter: u32
+    pub history: HashMap<ConnectionID, u32>,
+    pub counter: u32
 }
 
+#[derive(Debug)]
 pub struct Genome<'a> {
-    num_inputs: i32,
-    num_outputs: i32,
-    total_nodes: i32,
-    nodes: Vec<Node>,
-    connections: Vec<Connection>,
-    ih: &'a mut InnovationHistory,
-    fitness: f64,
+    pub num_inputs: i32,
+    pub num_outputs: i32,
+    pub total_nodes: i32,
+    pub nodes: Vec<Node>,
+    pub connections: Vec<Connection>,
+    pub ih: &'a mut InnovationHistory,
+    pub fitness: f64,
 }
 
 impl InnovationHistory {
