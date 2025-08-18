@@ -29,7 +29,7 @@ fn main() {
         counter: 0
     };
 
-    let mut biskupa = Genome{
+    let mut g1 = Genome{
         num_inputs: 1,
         num_outputs: 1,
         total_nodes:2,
@@ -39,7 +39,7 @@ fn main() {
 
     };
 
-    let mut chuj = Genome{
+    let mut g2 = Genome{
         num_inputs: 1,
         num_outputs: 1,
         total_nodes:2,
@@ -51,23 +51,23 @@ fn main() {
 
     println!("IH: {:?}", dupa);
 
-    biskupa.add_connection(&mut dupa, 0, 2, 1.0);
+    g1.add_connection(&mut dupa, 0, 2, 1.0);
 
     println!("IH: {:?}", dupa);
 
 
-    biskupa.add_connection(&mut dupa, 1, 2, 1.0);
+    g1.add_connection(&mut dupa, 1, 2, 1.0);
 
     println!("IH: {:?}", dupa);
 
-    if biskupa.connection_exist(c0.id) {
+    if g1.connection_exist(c0.id) {
         println!("connection exists")
     }
 
-    let inno0 = dupa.get_conn_innovation(biskupa.connections[0].id);
+    let inno0 = dupa.get_conn_innovation(g1.connections[0].id);
     println!("c0 innovation number: {}", inno0);
 
-    let inno1 = dupa.get_conn_innovation(biskupa.connections[1].id);
+    let inno1 = dupa.get_conn_innovation(g1.connections[1].id);
     println!("c1 innovation number: {}", inno1);
 
 }
