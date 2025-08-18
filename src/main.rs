@@ -1,8 +1,8 @@
-extern crate rand;
 extern crate piston_window;
+extern crate rand;
 
-use piston_window::*;
 use piston_window::types::Color;
+use piston_window::*;
 
 use seth::game::Game;
 use seth::game::draw::to_coord_u32;
@@ -10,12 +10,13 @@ use seth::game::draw::to_coord_u32;
 const BACK_COLOR: Color = [0.24, 0.13, 0.21, 1.0];
 
 fn main() {
-    let (width, height) = (30,30);
+    let (width, height) = (30, 30);
 
-    let mut widnow: PistonWindow = WindowSettings::new(
-        "Seth",
-        [to_coord_u32(width), to_coord_u32(height)]
-    ).exit_on_esc(true).build().unwrap();
+    let mut widnow: PistonWindow =
+        WindowSettings::new("Seth", [to_coord_u32(width), to_coord_u32(height)])
+            .exit_on_esc(true)
+            .build()
+            .unwrap();
 
     let mut game = Game::new(width, height);
 

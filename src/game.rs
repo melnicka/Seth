@@ -1,12 +1,12 @@
-use piston_window::*;
 use piston_window::types::Color;
-use rand::{rng, Rng};
+use piston_window::*;
+use rand::{Rng, rng};
 
-use snake::{Direction, Snake};
 use draw::{draw_block, draw_rectangle};
+use snake::{Direction, Snake};
 
 pub mod draw;
-pub mod snake;  
+pub mod snake;
 
 const FOOD_COLOR: Color = [0.48, 0.03, 0.15, 1.0];
 const BORDER_COLOR: Color = [0.0, 0.0, 0.1, 1.0];
@@ -39,26 +39,24 @@ impl Game {
             food_y: 4,
             width,
             height,
-            game_over: false
+            game_over: false,
         }
-
     }
 
     fn add_food(&mut self) {
         let mut rng = rng();
 
-        let mut new_x = rng.random_range(1..self.width -1);
-        let mut new_y = rng.random_range(1..self.height -1);
+        let mut new_x = rng.random_range(1..self.width - 1);
+        let mut new_y = rng.random_range(1..self.height - 1);
         // we don't want snake to overlap with the food
         while self.snake.overlap_tail(new_x, new_y) {
-            new_x = rng.random_range(1..self.width -1);
-            new_y = rng.random_range(1..self.height -1);
+            new_x = rng.random_range(1..self.width - 1);
+            new_y = rng.random_range(1..self.height - 1);
         }
 
         self.food_x = new_x;
         self.food_y = new_y;
         self.food_exists = true;
-
     }
 
     fn check_eating(&mut self) {
@@ -67,7 +65,7 @@ impl Game {
             self.food_exists = false;
             self.snake.grow_tail();
         }
-    } 
+    }
 
     fn check_if_snake_alive(&mut self, dir: Option<Direction>) -> bool {
         let (next_x, next_y) = self.snake.next_head(dir);
@@ -78,14 +76,14 @@ impl Game {
         }
 
         // checking if snake's head touches the walls
-        next_x > 0 && next_x < self.width -1 && next_y > 0 && next_y < self.height -1
+        next_x > 0 && next_x < self.width - 1 && next_y > 0 && next_y < self.height - 1
     }
 
     fn update_snake(&mut self, dir: Option<Direction>) {
         if self.game_over {
             return;
         }
-        
+
         if self.check_if_snake_alive(dir) {
             self.snake.move_forward(dir);
             self.check_eating();
@@ -116,7 +114,7 @@ impl Game {
             Key::Left => Some(Direction::Left),
             Key::Right => Some(Direction::Right),
 
-            _ => None
+            _ => None,
         };
 
         if dir.unwrap() == self.snake.head_direction().opposite() {
@@ -130,15 +128,15 @@ impl Game {
         if self.game_over {
             draw_rectangle(GAMEOVER_COLOR, 0, 0, self.width, self.height, con, g);
         }
-    
+
         // Draw snake first
         self.snake.draw(con, g);
-    
+
         // Then food
         if self.food_exists {
             draw_block(FOOD_COLOR, self.food_x, self.food_y, con, g);
         }
-    
+
         // Draw only thin borders, not a filled rectangle
         draw_rectangle(BORDER_COLOR, 0, 0, self.width, 1, con, g); // top
         draw_rectangle(BORDER_COLOR, 0, self.height - 1, self.width, 1, con, g); // bottom
@@ -163,5 +161,4 @@ impl Game {
             self.update_snake(None);
         }
     }
-    
 }

@@ -33,32 +33,41 @@ fn main() {
         num_inputs: 1,
         num_outputs: 1,
         total_nodes:2,
-        nodes: vec![n0, n1, n2],
+        nodes: vec![n0.clone(), n1.clone(), n2.clone()],
         connections: Vec::new(),
-        ih: &mut dupa,
         fitness: 0.0
 
     };
 
-    println!("IH: {:?}", biskupa.ih);
+    let mut chuj = Genome{
+        num_inputs: 1,
+        num_outputs: 1,
+        total_nodes:2,
+        nodes: vec![n0, n1, n2],
+        connections: Vec::new(),
+        fitness: 0.0
 
-    biskupa.add_connection(0, 2, 2.0);
+    };
 
-    println!("IH: {:?}", biskupa.ih);
+    println!("IH: {:?}", dupa);
+
+    biskupa.add_connection(&mut dupa, 0, 2, 1.0);
+
+    println!("IH: {:?}", dupa);
 
 
-    biskupa.add_connection(1, 2, 2.0);
+    biskupa.add_connection(&mut dupa, 1, 2, 1.0);
 
-    println!("IH: {:?}", biskupa.ih);
+    println!("IH: {:?}", dupa);
 
     if biskupa.connection_exist(c0.id) {
         println!("connection exists")
     }
 
-    let inno0 = biskupa.ih.get_conn_innovation(biskupa.connections[0].id);
+    let inno0 = dupa.get_conn_innovation(biskupa.connections[0].id);
     println!("c0 innovation number: {}", inno0);
 
-    let inno1 = biskupa.ih.get_conn_innovation(biskupa.connections[1].id);
+    let inno1 = dupa.get_conn_innovation(biskupa.connections[1].id);
     println!("c1 innovation number: {}", inno1);
 
 }

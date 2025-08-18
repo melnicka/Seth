@@ -1,6 +1,6 @@
-use std::collections::LinkedList;
-use piston_window::{Context, G2d};
 use piston_window::types::Color;
+use piston_window::{Context, G2d};
+use std::collections::LinkedList;
 
 use super::draw::draw_block;
 
@@ -13,9 +13,9 @@ pub enum Direction {
     Left,
     Right,
 }
-impl Direction{
-    pub fn opposite(&self) -> Direction{
-    // if, for example, the snake is going up and you try to go down, it won't let you
+impl Direction {
+    pub fn opposite(&self) -> Direction {
+        // if, for example, the snake is going up and you try to go down, it won't let you
         match *self {
             Direction::Up => Direction::Down,
             Direction::Down => Direction::Up,
@@ -38,11 +38,11 @@ pub struct Snake {
 }
 
 impl Snake {
-    pub fn new(x: i32, y:i32) -> Snake {
+    pub fn new(x: i32, y: i32) -> Snake {
         let mut body: LinkedList<Block> = LinkedList::new();
 
         // at the start of the game snake is three blocks long
-        body.push_back(Block { x: x + 2 , y: y });
+        body.push_back(Block { x: x + 2, y: y });
         body.push_back(Block { x: x + 1, y: y });
         body.push_back(Block { x: x, y: y });
 
@@ -67,16 +67,28 @@ impl Snake {
     pub fn move_forward(&mut self, dir: Option<Direction>) {
         match dir {
             Some(d) => self.direction = d,
-            None => ()
+            None => (),
         }
 
         let (head_x, head_y): (i32, i32) = self.find_head();
 
         let new_block = match self.direction {
-            Direction::Up => Block {x: head_x, y: head_y - 1 },
-            Direction::Down => Block { x: head_x, y: head_y + 1 },
-            Direction::Left => Block { x: head_x -1 , y: head_y },
-            Direction::Right => Block { x: head_x +1, y: head_y },
+            Direction::Up => Block {
+                x: head_x,
+                y: head_y - 1,
+            },
+            Direction::Down => Block {
+                x: head_x,
+                y: head_y + 1,
+            },
+            Direction::Left => Block {
+                x: head_x - 1,
+                y: head_y,
+            },
+            Direction::Right => Block {
+                x: head_x + 1,
+                y: head_y,
+            },
         };
 
         self.body.push_front(new_block);
@@ -95,14 +107,14 @@ impl Snake {
         let mut moving_dir = self.direction;
         match dir {
             Some(d) => moving_dir = d,
-            None => {},
+            None => {}
         }
 
         match moving_dir {
-            Direction::Up => (head_x, head_y -1),
-            Direction::Down => (head_x, head_y +1),
-            Direction::Left => (head_x -1, head_y),
-            Direction::Right => (head_x +1, head_y),
+            Direction::Up => (head_x, head_y - 1),
+            Direction::Down => (head_x, head_y + 1),
+            Direction::Left => (head_x - 1, head_y),
+            Direction::Right => (head_x + 1, head_y),
         }
     }
 
@@ -116,15 +128,14 @@ impl Snake {
         let mut i = 0;
         for block in &self.body {
             if x == block.x && y == block.y {
-                return true
-            } 
+                return true;
+            }
             i += 1;
-            if i == self.body.len() - 1 { // -1 because we don't include the head
+            if i == self.body.len() - 1 {
+                // -1 because we don't include the head
                 break;
             }
         }
         return false;
     }
-
 }
-
