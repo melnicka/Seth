@@ -2,6 +2,7 @@ use rand::Rng;
 use std::cell::RefCell;
 use std::collections::HashMap;
 use std::rc::Rc;
+use rand::prelude::IndexedRandom;
 
 #[derive(Debug, PartialEq, Clone)]
 pub enum NodeType {
@@ -91,5 +92,27 @@ impl Genome {
 
     pub fn connection_exist(&self, conn_id: ConnectionID) -> bool {
         self.connections.iter().any(|c| c.id == conn_id)
+    }
+
+
+
+    pub fn get_valid_node_ids(&self) -> (u32, u32) {
+        let mut rng = rand::rng();
+
+        loop {
+            let n1 = self.nodes.choose(&mut rng).unwrap();
+            let n2 = self.nodes.choose(&mut rng).unwrap();
+
+            match (&n1.node_type, &n2.node_type) {
+                (NodeType::Input, NodeType::Hidden)
+                | (NodeType::Input, NodeType::Output)
+                | (NodeType::Hidden, NodeType::Output)
+                | (NodeType::Hidden, NodeType::Hidden) => return (n1.id, n2.id),
+
+                (NodeType::Output, NodeType::Input) => return (n2.id, n1.id),
+
+                _ => continue,
+            }
+        }
     }
 }
