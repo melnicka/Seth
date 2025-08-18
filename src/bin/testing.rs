@@ -1,4 +1,5 @@
 use seth::neat::genome::*;
+use seth::neat::mutations::*;
 use std::collections::HashMap;
 
 fn main() {
@@ -7,7 +8,8 @@ fn main() {
         counter: 0,
     };
 
-    let g = Genome::new(1, 2, &mut dupa);
-    println!("{:?}", g)
- 
+    let mut g = Genome::new(1, 2, &mut dupa);
+    println!("\n before mutation: {:?}\n",g.connections);
+    mutate_weight(&mut g);
+    println!("\n after mutation: {:?}\n", g.connections);
 }

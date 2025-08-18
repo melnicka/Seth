@@ -1,9 +1,5 @@
-use piston_window::Input;
 use rand::Rng;
-use std::cell::RefCell;
-use std::collections::HashMap;
-use std::process::Output;
-use std::rc::Rc;
+use std::{clone, collections::HashMap};
 use rand::prelude::IndexedRandom;
 
 #[derive(Debug, PartialEq, Clone)]
@@ -156,5 +152,13 @@ impl Genome {
                 _ => continue,
             }
         }
+    }
+
+    pub fn get_conn_hashmap(&self) -> HashMap<ConnectionID, &Connection> {
+        let mut conn_map: HashMap<ConnectionID, &Connection> = HashMap::new();
+        for conn in &self.connections {
+            conn_map.insert(conn.id, conn);
+        };
+        conn_map
     }
 }
