@@ -1,6 +1,5 @@
 use rand::{seq::IndexedRandom, seq::IndexedMutRandom, Rng};
-use std::collections::HashMap;
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 
 use super::genome::*;
 
