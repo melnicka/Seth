@@ -1,5 +1,5 @@
 use rand::Rng;
-use std::{clone, collections::HashMap};
+use std::collections::{HashMap, HashSet};
 use rand::prelude::IndexedRandom;
 
 #[derive(Debug, PartialEq, Clone)]
@@ -80,19 +80,19 @@ impl Genome {
                 fitness: 0.0
             };
 
-            for i in 0..num_inputs {
+            for _i in 0..num_inputs {
                 in_node_ids.push(g.total_nodes);
                 g.add_node(g.total_nodes, NodeType::Input);
             };
 
-            for i in 0..num_outputs {
+            for _i in 0..num_outputs {
                 out_node_ids.push(g.total_nodes);
                 g.add_node(g.total_nodes, NodeType::Output);
             };
 
             for in_id in &in_node_ids {
                 for out_id in &out_node_ids {
-                    let mut weight: f64 = rng.random_range(-1.0..1.0);
+                    let weight: f64 = rng.random_range(-2.0..2.0);
                     g.add_connection(ih, *in_id, *out_id, weight);
                 };
             };
@@ -119,7 +119,7 @@ impl Genome {
         };
         if !self.connection_exist(conn_id) {
             let _inno: i32 = ih.get_conn_innovation(conn_id);
-            let mut conn = Connection {
+            let conn = Connection {
                 id: conn_id,
                 weight,
                 enabled: true,
@@ -161,4 +161,40 @@ impl Genome {
         };
         conn_map
     }
+}
+
+fn detla_genes(g1: &Genome, g2: &Genome) -> f64 {
+    let longer_genome;
+    if g1.connections.len() > g2.connections.len() {
+        longer_genome = g1.connections.len()
+    } else {
+        longer_genome = g2.connections.len()
+    }
+    
+    let map1 = g1.get_conn_hashmap();
+    let map2 = g2.get_conn_hashmap();
+    let keys1: HashSet<ConnectionID> = map1.keys().cloned().collect();
+    let keys2: HashSet<ConnectionID> = map2.keys().cloned().collect();
+    
+    let mismatches: HashSet<ConnectionID> = keys1
+    .symmetric_difference(&keys2).cloned().collect();
+
+    (mismatches.len() as f64) / (longer_genome as f64)
+}
+
+fn delta_weights(g1: &Genome, g2: &Genome) -> f64 {
+    let mut diff = 0.0;
+
+    let map1 = g1.get_conn_hashmap();
+    let map2 = g2.get_conn_hashmap();
+    let keys1: HashSet<ConnectionID> = map1.keys().cloned().collect();
+    let keys2: HashSet<ConnectionID> = map2.keys().cloned().collect();
+
+    let matches: HashSet<ConnectionID> = keys1
+    .intersection(&keys2).cloned().collect();
+
+    for key in &matches {
+        diff += map1.get(key).unwrap().weight - map2.get(key).unwrap().weight
+    }
+    (diff / (matches.len() as f64)).abs()
 }
