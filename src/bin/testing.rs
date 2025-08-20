@@ -8,8 +8,8 @@ fn main() {
         counter: 0,
     };
 
-    let mut g = Genome::new(1, 2, &mut dupa);
-    println!("\n before mutation: {:?}\n",g.connections);
-    mutate_weight(&mut g);
-    println!("\n after mutation: {:?}\n", g.connections);
+    let parent1 = Genome::new(1, 2, &mut dupa);
+    let parent2 = Genome::new(1, 2, &mut dupa);
+    println!("\n parent1: {:?}\n",parent1);
+    println!("\n parent2: {:?}\n", parent2);
 }

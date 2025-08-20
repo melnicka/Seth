@@ -7,9 +7,6 @@ pub struct Population {
     pub all_species: Vec<Species>,
     pub pop_size: i32,
     pub current_gen: i32,
-    species_threshold: f64,
-    c1: f64, // delta genes
-    c2: f64 // delta weights
 }
 
 pub struct Species {
@@ -19,14 +16,16 @@ pub struct Species {
 }
 
 impl Population {
-    pub fn assign_to_species(&mut self, genome: Genome) {
+    pub fn assign_to_species(&mut self, genome: Genome,
+        c1:f64, c2:f64, threshold: f64) {
+
         for species in &mut self.all_species {
-            if self.same_species(&genome, &species.genomes[0]) {
+            if same_species(&genome, &species.genomes[0], c1, c2, threshold) {
                 species.genomes.push(genome);
                 return;
             }
         }
-        let mut new_species = Species{
+        let new_species = Species{
             genomes: vec![genome],
             average_fitness: 0.0,
             breeding_rate: 0
@@ -35,13 +34,6 @@ impl Population {
         self.all_species.push(new_species);
     }
 
-    pub fn same_species(&self, g1: &Genome, g2: &Genome) -> bool {
-        let dg = detla_genes(g1, g2);
-        let dw = delta_weights(g1, g2);
-        let delta = self.c1*dg + self.c2*dw;
-        
-        delta < self.species_threshold
-    }
 }
 
 fn detla_genes(g1: &Genome, g2: &Genome) -> f64 {
@@ -78,4 +70,13 @@ fn delta_weights(g1: &Genome, g2: &Genome) -> f64 {
         diff += map1.get(key).unwrap().weight - map2.get(key).unwrap().weight
     }
     (diff / (matches.len() as f64)).abs()
+
+}
+
+fn same_species(g1: &Genome, g2: &Genome, c1: f64, c2: f64, threshold: f64) -> bool {
+    let dg = detla_genes(g1, g2);
+    let dw = delta_weights(g1, g2);
+    let delta = c1*dg + c2*dw;
+    
+    delta < threshold
 }
