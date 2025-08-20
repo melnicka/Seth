@@ -110,6 +110,8 @@ impl Game {
     fn restart(&mut self) {
         self.snake = Snake::new(2, 2);
         self.waiting_time = 0.0;
+        self.time_elapsed = 0.0;
+        self.time_last_eaten = 0.0;
         self.food_exists = true;
         self.food_x = 6;
         self.food_y = 5;
