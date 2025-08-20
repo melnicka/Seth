@@ -1,3 +1,3 @@
 pub mod genome;
 pub mod mutations;
-pub mod species;
+pub mod population;

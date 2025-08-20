@@ -34,7 +34,7 @@ pub struct InnovationHistory {
     pub counter: i32,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct Genome {
     pub num_inputs: i32,
     pub num_outputs: i32,
