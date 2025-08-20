@@ -36,6 +36,14 @@ impl Population {
 
 }
 
+fn same_species(g1: &Genome, g2: &Genome, c1: f64, c2: f64, threshold: f64) -> bool {
+    let dg = detla_genes(g1, g2);
+    let dw = delta_weights(g1, g2);
+    let delta = c1*dg + c2*dw;
+    
+    delta < threshold
+}
+
 fn detla_genes(g1: &Genome, g2: &Genome) -> f64 {
     let longer_genome;
     if g1.connections.len() > g2.connections.len() {
@@ -71,12 +79,4 @@ fn delta_weights(g1: &Genome, g2: &Genome) -> f64 {
     }
     (diff / (matches.len() as f64)).abs()
 
-}
-
-fn same_species(g1: &Genome, g2: &Genome, c1: f64, c2: f64, threshold: f64) -> bool {
-    let dg = detla_genes(g1, g2);
-    let dw = delta_weights(g1, g2);
-    let delta = c1*dg + c2*dw;
-    
-    delta < threshold
 }
