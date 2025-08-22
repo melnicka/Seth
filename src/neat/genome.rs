@@ -61,7 +61,6 @@ impl InnovationHistory {
 }
 
 impl Genome {
-         // creates a new network with
          pub fn new(num_inputs: i32,
             num_outputs: i32,
             ih: &mut InnovationHistory) -> Genome {
@@ -98,6 +97,59 @@ impl Genome {
             };
             g
          }
+
+         pub fn forward(&self, inputs: Vec<f64>) -> Vec<f64> {
+            let mut node_values: HashMap<i32, f64> = HashMap::new();
+            let mut node_sums: HashMap<i32, f64> = HashMap::new();
+            let mut input_index = 0;
+            let mut outputs: Vec<f64> = Vec::new();
+        
+            for node in &self.nodes {
+                match node.node_type{
+                    NodeType::Input => {
+                        if input_index < inputs.len() {
+                            node_values.insert(node.id, inputs[input_index]);
+                            input_index +=1;
+                        }
+                    },
+                    _ => {
+                        node_values.insert(node.id, 0.0);
+                    },
+                }
+            }
+
+            for conn in &self.connections{
+                if conn.enabled {
+                    let node_value = node_values.get(&conn.id.in_node_id).unwrap();
+                    let sum = node_sums.entry(conn.id.out_node_id).or_insert(0.0);
+                    *sum += node_value * conn.weight;
+                }
+            }
+            
+            for node in &self.nodes{
+                match node.node_type {
+                    NodeType::Output => {
+                        let val:&mut f64 = node_values.get_mut(&node.id).unwrap();
+                        *val = sigmoid(*node_sums.get(&node.id).unwrap());
+                    }
+                    _ => {
+                        let val = node_values.get_mut(&node.id).unwrap();
+                        *val = relu(*node_sums.get(&node.id).unwrap_or(&0.0));
+                    }
+                }
+            }
+
+            for node in &self.nodes {
+                match node.node_type {
+                    NodeType::Output => {
+                        outputs.push(*node_values.get(&node.id).unwrap());
+                    },
+                    _ => {}
+                }
+            }
+
+            outputs
+        }
 
     pub fn add_node(&mut self, node_id: i32, node_type: NodeType) {
         let new_node = Node {
@@ -161,4 +213,16 @@ impl Genome {
         };
         conn_map
     }
+}
+
+
+fn relu(x: f64) -> f64 {
+    if x > 0.0 {
+        return x;
+    } 
+    return 0.0;
+}
+
+fn sigmoid(x: f64) -> f64 {
+    1.0 / (1.0 + (-x).exp())
 }
