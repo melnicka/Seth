@@ -1,6 +1,6 @@
 use piston_window::types::Color;
 use piston_window::{Context, G2d};
-use std::collections::LinkedList;
+use std::collections::VecDeque;
 
 use super::draw::draw_block;
 
@@ -33,13 +33,13 @@ struct Block {
 
 pub struct Snake {
     direction: Direction,
-    body: LinkedList<Block>,
+    body: VecDeque<Block>,
     tail: Option<Block>,
 }
 
 impl Snake {
     pub fn new(x: i32, y: i32) -> Snake {
-        let mut body: LinkedList<Block> = LinkedList::new();
+        let mut body: VecDeque<Block> = VecDeque::new();
 
         // at the start of the game snake is three blocks long
         body.push_back(Block { x: x + 2, y: y });

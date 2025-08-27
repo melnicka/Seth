@@ -146,15 +146,12 @@ impl Game {
             draw_rectangle(GAMEOVER_COLOR, 0, 0, self.width, self.height, con, g);
         }
 
-        // Draw snake first
         self.snake.draw(con, g);
 
-        // Then food
         if self.food_exists {
             draw_block(FOOD_COLOR, self.food_x, self.food_y, con, g);
         }
 
-        // draws only thin borders, not a filled rectangle
         draw_rectangle(BORDER_COLOR, 0, 0, self.width, 1, con, g); // top
         draw_rectangle(BORDER_COLOR, 0, self.height - 1, self.width, 1, con, g); // bottom
         draw_rectangle(BORDER_COLOR, 0, 0, 1, self.height, con, g); // left
@@ -179,4 +176,68 @@ impl Game {
             self.update_snake(None);
         }
     }
+
+    fn distance_from_food(&self) -> (f64, f64) {
+        let (head_x, head_y) = self.snake.find_head();
+        let mut dist_x = (self.food_x as f64) - (head_x as f64);
+        let mut dist_y = (self.food_y as f64) - (head_y as f64);
+
+        dist_x = dist_x / (self.width as f64);
+        dist_y = dist_y / (self.height as f64); 
+        (dist_x, dist_y)
+    }
+
+    fn distance_from_walls(&self) -> (f64, f64, f64, f64){
+        let (head_x, head_y) = self.snake.find_head();
+        let mut dist_up = 0.0 + (head_y as f64);
+        let mut dist_down = (self.height as f64) - (head_y as f64);
+        let mut dist_left = 0.0 + (head_x as f64);
+        let mut dist_right = (self.width as f64) - (head_x as f64);
+
+        dist_up = dist_up / (self.height as f64);
+        dist_down = dist_down / (self.height as f64);
+        dist_left = dist_left / (self.width as f64);
+        dist_right = dist_right / (self.width as f64);
+        (dist_up, dist_down, dist_left, dist_right)
+    }
+
+    fn distance_from_tail(&self) -> (f64, f64, f64, f64) {
+        let (head_x, head_y) = self.snake.find_head();
+        let mut dist_up: f64 = 1.0;
+        let mut dist_down: f64 = 1.0;
+        let mut dist_left : f64 = 1.0;
+        let mut dist_right: f64 = 1.0;
+
+        for i in 1..(head_y +1) {
+            if self.snake.overlap_tail(head_x, head_y - i) {
+                dist_up = (i as f64) / (self.height as f64);
+                break;
+            }
+        }
+
+        for i in 1..(self.height - head_y + 1) {
+            if self.snake.overlap_tail(head_x, head_y + i) {
+                dist_down = (i as f64) / (self.height as f64);
+                break;
+            }
+        }
+
+        for i in 1..(head_x + 1) {
+            if self.snake.overlap_tail(head_x - i, head_y) {
+                dist_left = (i as f64) / (self.width as f64);
+                break;
+            }
+        }
+
+        for i in 1..(self.width - head_x + 1) {
+            if self.snake.overlap_tail(head_x + i, head_y) {
+                dist_right = (i as f64) / (self.width as f64);
+                break;
+            }
+        }
+        
+    (dist_up, dist_down, dist_left, dist_right)
+
+    }
+
 }
