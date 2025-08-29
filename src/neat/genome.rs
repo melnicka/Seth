@@ -151,6 +151,11 @@ impl Genome {
             outputs
         }
 
+    pub fn calculate_fitness(&mut self, score: i32, time_survived: f64) {
+        let fitness = (score as f64) * 100.0 + time_survived;
+        self.fitness = fitness;
+    }
+
     pub fn add_node(&mut self, node_id: i32, node_type: NodeType) {
         let new_node = Node {
             id: node_id,

@@ -1,4 +1,4 @@
-use seth::neat::{genome::*, mutations::*, population::Population, test_utils::*};
+use seth::neat::{genome::*, reproduction::*, population::Population, test_utils::*};
 use std::collections::HashMap;
 const C1: f64 = 1.0;
 const C2: f64 = 1.0;

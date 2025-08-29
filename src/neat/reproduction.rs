@@ -48,6 +48,7 @@ pub fn crossover(parent1: &Genome, parent2: &Genome) -> Genome {
     offspring
 }
 
+
 pub fn mutate_weight(genome: &mut Genome) {
     let mut rng = rand::rng();
 

@@ -188,6 +188,7 @@ impl Game {
     }
 
     fn distance_from_walls(&self) -> (f64, f64, f64, f64){
+        
         let (head_x, head_y) = self.snake.find_head();
         let mut dist_up = 0.0 + (head_y as f64);
         let mut dist_down = (self.height as f64) - (head_y as f64);

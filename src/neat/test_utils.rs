@@ -16,7 +16,8 @@ pub fn display_genome(genome: &Genome) {
 pub fn display_species(species: &Species) {
     println!("\nNumer of genomes:{:?}", species.genomes.len());
     println!("Average fitness:{:?}", species.average_fitness);
-    println!("Breedinf rate:{:?}", species.breeding_rate);
+    println!("Best fitness rate:{:?}", species.best_fitness);
+    println!("Staleness counter:{:?}", species.staleness_counter);
 }
 
 pub fn display_population(population: &Population) {

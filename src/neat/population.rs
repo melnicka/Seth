@@ -12,7 +12,8 @@ pub struct Population {
 pub struct Species {
     pub genomes: Vec<Genome>,
     pub average_fitness: f64,
-    pub breeding_rate: i32
+    pub best_fitness: f64,
+    pub staleness_counter: i32,
 }
 
 impl Population {
@@ -28,7 +29,8 @@ impl Population {
         let new_species = Species{
             genomes: vec![genome],
             average_fitness: 0.0,
-            breeding_rate: 0
+            best_fitness: 0.0,
+            staleness_counter: 0,
         };
 
         self.all_species.push(new_species);
