@@ -38,6 +38,16 @@ impl Population {
 
 }
 
+impl Species {
+    pub fn calc_average_fitness(&mut self) {
+        let mut sum = 0.0;
+        for genome in &self.genomes {
+            sum += genome.fitness;
+        }
+        self.average_fitness = sum / (self.genomes.len() as f64)
+    }
+}
+
 fn same_species(g1: &Genome, g2: &Genome, c1: f64, c2: f64, threshold: f64) -> bool {
     let dg = detla_genes(g1, g2);
     let dw = delta_weights(g1, g2);
