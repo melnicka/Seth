@@ -39,12 +39,19 @@ impl Population {
 }
 
 impl Species {
-    pub fn calc_average_fitness(&mut self) {
+    // calculates average and the best fitness for species, returns the best individual
+    pub fn get_champion(&mut self) -> &Genome {
         let mut sum = 0.0;
+        let mut champion = &self.genomes[0];
         for genome in &self.genomes {
             sum += genome.fitness;
+            if genome.fitness > champion.fitness {
+                champion = genome;
+            }
         }
-        self.average_fitness = sum / (self.genomes.len() as f64)
+        self.average_fitness = sum / (self.genomes.len() as f64);
+        self.best_fitness = champion.fitness;
+        champion
     }
 }
 

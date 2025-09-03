@@ -10,11 +10,16 @@ fn main() {
         counter: 0,
     };
 
-    let mut _new_pop = Population{all_species: Vec::new(),
-        pop_size:0, current_gen:0};
+    let mut new_pop = Population{all_species: Vec::new(),
+        pop_size:2, current_gen:0};
 
-    let g1 = Genome::new(2, 4, &mut dupa);
-    let inputs = vec![1.0,2.0];
+    let mut g1 = Genome::new(2, 4, &mut dupa);
+    let g2 = Genome::new(2, 4, &mut dupa);
+    g1.fitness = 100.0;
+    new_pop.assign_to_species(g1, C1, C2, THRESHOLD);
+    new_pop.assign_to_species(g2, C1, C2, THRESHOLD);
+    for species in &mut new_pop.all_species{
+        println!("{:?}", species.get_champion().fitness)
+    }
 
-    print!("{:?}",g1.forward(inputs))
     }
