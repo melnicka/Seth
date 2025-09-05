@@ -18,8 +18,5 @@ fn main() {
     g1.fitness = 100.0;
     new_pop.assign_to_species(g1, C1, C2, THRESHOLD);
     new_pop.assign_to_species(g2, C1, C2, THRESHOLD);
-    for species in &mut new_pop.all_species{
-        println!("{:?}", species.get_champion().fitness)
-    }
 
     }

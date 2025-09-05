@@ -13,7 +13,6 @@ pub struct Species {
     pub genomes: Vec<Genome>,
     pub average_fitness: f64,
     pub best_fitness: f64,
-    pub staleness_counter: i32,
 }
 
 impl Population {
@@ -30,26 +29,53 @@ impl Population {
             genomes: vec![genome],
             average_fitness: 0.0,
             best_fitness: 0.0,
-            staleness_counter: 0,
         };
 
         self.all_species.push(new_species);
     }
 
+    pub fn kill_weakest_genomes(&mut self, keep_ratio: f64) {
+        let mut all_genomes: Vec<(usize, Genome)> = Vec::new();
+
+        for (i, species) in self.all_species.iter_mut().enumerate(){
+            let species_size = species.genomes.len() as f64;
+            for genome in &mut species.genomes {
+                genome.adjusted_fitness = genome.fitness /species_size;
+            }
+            all_genomes.extend(species.genomes.drain(..)
+            .map(|g| (i, g)))
+        }
+        all_genomes.sort_by(|a, b|
+        b.1.adjusted_fitness.partial_cmp(&a.1.adjusted_fitness).unwrap());
+        
+        let keep_count = ((self.pop_size as f64) * keep_ratio).ceil() as usize;
+        all_genomes.truncate(keep_count);
+
+        for (i, genome) in all_genomes{
+            self.all_species[i].genomes.push(genome);
+        }
+        
+        self.all_species.retain(|sp| !sp.genomes.is_empty());
+    }
+
 }
 
 impl Species {
-    // calculates average and the best fitness for species, returns the best individual
-    pub fn get_champion(&mut self) -> &Genome {
+    pub fn calculate_average_fitness(&mut self) {
         let mut sum = 0.0;
-        let mut champion = &self.genomes[0];
         for genome in &self.genomes {
             sum += genome.fitness;
-            if genome.fitness > champion.fitness {
+        }
+        self.average_fitness = sum / (self.genomes.len() as f64);
+    }
+
+    pub fn find_champion(&mut self) -> &Genome {
+        let mut champion = &self.genomes[0];
+        for genome in &self.genomes{
+            if genome.fitness > champion.fitness{
                 champion = genome;
             }
         }
-        self.average_fitness = sum / (self.genomes.len() as f64);
         self.best_fitness = champion.fitness;
         champion
     }

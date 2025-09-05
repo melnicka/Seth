@@ -42,6 +42,7 @@ pub struct Genome {
     pub nodes: Vec<Node>,
     pub connections: Vec<Connection>,
     pub fitness: f64,
+    pub adjusted_fitness: f64
 }
 
 impl InnovationHistory {
@@ -76,7 +77,8 @@ impl Genome {
                 total_nodes: 0,
                 nodes: Vec::new(),
                 connections: Vec::new(),
-                fitness: 0.0
+                fitness: 0.0,
+                adjusted_fitness: 0.0
             };
 
             for _i in 0..num_inputs {

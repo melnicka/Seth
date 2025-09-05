@@ -28,7 +28,8 @@ pub fn crossover(parent1: &Genome, parent2: &Genome) -> Genome {
         total_nodes: fitter_parent.total_nodes,
         nodes: fitter_parent.nodes.clone(),
         connections: Vec::new(),
-        fitness: 0.0
+        fitness: 0.0,
+        adjusted_fitness: 0.0
     };
 
     for conn_id in matches {
