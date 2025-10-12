@@ -1,6 +1,8 @@
 // use rand::{seq::IndexedRandom, seq::IndexedMutRandom, Rng};
 use std::collections::{HashSet};
 
+use rand::seq::IndexedRandom;
+
 use super::genome::*;
 
 pub struct Population {
@@ -78,6 +80,19 @@ impl Species {
         }
         self.best_fitness = champion.fitness;
         champion
+    }
+
+    pub fn parent_selection(&mut self, k: i32) -> &Genome {
+        let mut rng =  rand::rng();
+        let mut best = self.genomes.choose(&mut rng).unwrap();
+
+        for i in 1..k {
+            let new = self.genomes.choose(&mut rng).unwrap();
+            if new.fitness > best.fitness {
+                best = new;
+            }
+        }
+        best
     }
 }
 
