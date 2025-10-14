@@ -1,3 +1,4 @@
+use rand::{seq::IndexedRandom, Rng};
 use seth::neat::{genome::*, reproduction::*, population::Population, test_utils::*};
 use std::collections::HashMap;
 const C1: f64 = 1.0;
@@ -13,10 +14,15 @@ fn main() {
     let mut new_pop = Population{all_species: Vec::new(),
         pop_size:2, current_gen:0};
 
-    let mut g1 = Genome::new(2, 4, &mut dupa);
-    let g2 = Genome::new(2, 4, &mut dupa);
-    g1.fitness = 100.0;
-    new_pop.assign_to_species(g1, C1, C2, THRESHOLD);
-    new_pop.assign_to_species(g2, C1, C2, THRESHOLD);
+    let mut rng = rand::rng();
+    let dupa = vec![1];
+    let x = dupa.choose(&mut rng).unwrap();
+    for _i in 0..3{
+        let y = dupa.choose(&mut rng).unwrap();
+        if x == y {
+            println!("{}", y)
+        }
+    }
+    
 
     }
