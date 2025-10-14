@@ -11,18 +11,10 @@ fn main() {
         counter: 0,
     };
 
-    let mut new_pop = Population{all_species: Vec::new(),
-        pop_size:2, current_gen:0};
+    let mut new_pop = Population::initialize_pop(
+    3,&mut dupa, 2, 2);
+    new_pop.new_generation(0.6, &mut dupa, C1, C2, THRESHOLD);
 
-    let mut rng = rand::rng();
-    let dupa = vec![1];
-    let x = dupa.choose(&mut rng).unwrap();
-    for _i in 0..3{
-        let y = dupa.choose(&mut rng).unwrap();
-        if x == y {
-            println!("{}", y)
-        }
-    }
+    println!("{:?}", new_pop)
     
-
     }

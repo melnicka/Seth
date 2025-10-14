@@ -7,12 +7,14 @@ use crate::neat::reproduction::{crossover, mutate_add_conn, mutate_add_node, mut
 
 use super::genome::*;
 
+#[derive(Debug)]
 pub struct Population {
     pub all_species: Vec<Species>,
     pub pop_size: i32,
     pub current_gen: i32,
 }
 
+#[derive(Debug)]
 pub struct Species {
     pub genomes: Vec<Genome>,
     pub average_fitness: f64,
@@ -71,6 +73,29 @@ impl Population {
             self.assign_to_species(genome, c1, c2, threshold);
         }
         
+    }
+
+    pub fn initialize_pop(pop_size: i32, ih: &mut InnovationHistory,
+    in_layer_nodes: i32, out_layer_nodes: i32) -> Population{
+        let mut pop = Population{
+            all_species: Vec::new(),
+            pop_size,
+            current_gen: 0
+        };
+
+        let mut starting_species = Species{
+            genomes: Vec::new(),
+            average_fitness: 0.0,
+            best_fitness:0.0
+        };
+        
+        for _i in 0..pop_size{
+            let genome = Genome::new(in_layer_nodes, 
+                out_layer_nodes, ih);
+            starting_species.genomes.push(genome);
+        }
+        pop.all_species.push(starting_species);
+        pop
     }
 
     pub fn assign_to_species(&mut self, genome: Genome,
